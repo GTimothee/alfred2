@@ -1,11 +1,5 @@
 from __future__ import annotations
-import tempfile
-import io, wave, struct
-
-import os
 import logging
-from typing import List, Tuple
-from logging.handlers import RotatingFileHandler
 from impersonated.kokoro_tts import KokoroText2Speech 
 from impersonated.chatbot import ChatBot, BOT_NAME
 import sys
@@ -95,7 +89,7 @@ def conversation_loop(bot, tts):
 
 if __name__ == "__main__": 
     args = parse_args()
-    
+
     try:
         bot = ChatBot(
             model_name="gemini-2.5-flash",
