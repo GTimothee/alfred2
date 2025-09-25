@@ -9,6 +9,7 @@ from logging.handlers import RotatingFileHandler
 from impersonated.kokoro_tts import KokoroText2Speech 
 from impersonated.chatbot import ChatBot, BOT_NAME
 import sys
+import argparse
 
 from dotenv import load_dotenv
 
@@ -55,11 +56,16 @@ logger = setup_logging()
 
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Chat + Kokoro TTS CLI")
+    parser.add_argument("--lang-code", "-l", default="a", help="Kokoro language code (default: a)")
+    return parser.parse_args()
+
 def conversation_loop(bot, tts): 
     print(f"{BOT_NAME}. Type {{/exit, :q, quit, exit}} to quit.")
 
     while True:
-        
+
         # get user input
         try:
             user_text = input("You: ").strip()
@@ -88,7 +94,8 @@ def conversation_loop(bot, tts):
 
 
 if __name__ == "__main__": 
-
+    args = parse_args()
+    
     try:
         bot = ChatBot(
             model_name="gemini-2.5-flash",
@@ -100,10 +107,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     try:
-        tts = KokoroText2Speech()
+        tts = KokoroText2Speech(lang_code=args.lang_code)
     except Exception as e:
         logger.error(f"Failed to initialize Kokoro TTS: {e}")
         sys.exit(1)
 
+    print(f"Using Kokoro lang_code={args.lang_code}")
     conversation_loop(bot, tts)
 
