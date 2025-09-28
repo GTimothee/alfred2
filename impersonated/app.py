@@ -101,7 +101,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     try:
-        tts = KokoroText2Speech(lang_code=args.lang_code)
+        tts = KokoroText2Speech(lang_code=args.lang_code, speed=.8)
     except Exception as e:
         logger.error(f"Failed to initialize Kokoro TTS: {e}")
         sys.exit(1)
